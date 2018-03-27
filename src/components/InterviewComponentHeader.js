@@ -19,15 +19,23 @@ const styles = {
       textTransform: 'lowercase !important',
       fontSize: 'large !important',
       letterSpacing: '0.1em',
-      color: '#424242 !important'
+      color: '#424242 !important',
     }),
     get changeNotActive() {
-      return css`${this.base}`
+      return css`
+        ${this.base}
+        &:hover {
+          background-color: white;
+        }
+      `
     },
     get changeActive() {
       return css`
         ${this.base}
-        color: #40C4FF !important;
+        color: #1DE9B6 !important;
+        &:hover {
+          background-color: white;
+        }
         `
     },
     get clear() {
@@ -36,6 +44,9 @@ const styles = {
         border-left: 0.15rem #424242 solid !important;
         border-radius: 0 !important;
         padding-left: 0.6em !important;
+        &:hover {
+          background-color: white;
+        }
         `
       },
     icon: css({
@@ -44,10 +55,11 @@ const styles = {
   }
 }
 
-const HeaderActions = ({ onChangeClick, changeActive }) =>
-  <Grid container direction="row" justify="flex-end" spacing={0}>
+const HeaderActions = ({ onChangeClick, onClearClick, changeActive }) =>
+  <Grid container direction="row" justify="flex-end" spacing={0} wrap="nowrap">
     <Grid item>
       <Button onClick={onChangeClick}
+              disableRipple
               className={ changeActive ? styles.buttons.changeActive : styles.buttons.changeNotActive }
               variant="flat"
               size="medium">
@@ -57,7 +69,7 @@ const HeaderActions = ({ onChangeClick, changeActive }) =>
     </Grid>
     <Grid item>
       <Slide direction="left" in={changeActive} mountOnEnter unmountOnExit>
-        <Button className={styles.buttons.clear} variant="flat" size="medium">
+        <Button onClick={onClearClick} disableRipple className={styles.buttons.clear} variant="flat" size="medium">
           <Icon className={styles.buttons.icon}>close</Icon>
           löschen
         </Button>
@@ -66,7 +78,7 @@ const HeaderActions = ({ onChangeClick, changeActive }) =>
   </Grid>
 
 const InterviewComponentHeader = props => {
-  const { onChangeClick, changeActive } = props
+  const { onChangeClick, onClearClick, changeActive } = props
 
   return (
     <Grid container className={styles.container} direction="row" alignItems="center" spacing={0}>
@@ -76,7 +88,7 @@ const InterviewComponentHeader = props => {
         </Typography>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <HeaderActions onChangeClick={onChangeClick} changeActive={changeActive} />
+        <HeaderActions onChangeClick={onChangeClick} onClearClick={onClearClick} changeActive={changeActive} />
       </Grid>
     </Grid>
   )
